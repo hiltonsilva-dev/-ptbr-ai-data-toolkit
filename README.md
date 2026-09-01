@@ -1,18 +1,15 @@
-# PT-BR AI Data Toolkit 🇧🇷
-> Toolkit profissional para validação e QA de datasets de treinamento de IA com foco em PT-BR Nativo.
+# ptbr-ai-data-toolkit
 
-Criado como portfólio para **Content Evaluation & Data Annotation** - área de atuação da OneForma.
+Toolkit para validação de qualidade de datasets em português do Brasil focado em AI Training e Data Annotation.
 
-### 🚀 O que faz
-- ✅ Valida se o dataset está realmente em PT-BR (detecta inglês infiltrado)
-- ✅ Encontra textos vazios e duplicados
-- ✅ Valida formato JSONL padrão de empresas de AI Training
-- ✅ Gera relatório de qualidade
+Este projeto foi desenvolvido como portfólio para demonstrar habilidades em validação de dados, controle de qualidade e processamento de linguagem natural em PT-BR.
 
-### 🛠️ Tech Stack
-`Python` `Pandas` `LangDetect` `Data Quality`
+## Objetivo
 
-### 📦 Como usar
-```bash
-pip install -r requirements.txt
-python validator.py
+Validar datasets no formato JSONL garantindo:
+- Detecção de idioma (PT-BR)
+- Identificação de textos vazios
+- Deduplicação de entradas
+- Validação de formato JSON
+
+## Estrutura do projeto
