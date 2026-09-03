@@ -1,45 +1,38 @@
-ptbr-ai-data-toolkit
-Toolkit para validação de qualidade de datasets em português do Brasil focado em AI Training e Data Annotation.
+# ptbr-ai-data-toolkit
 
-Este projeto foi desenvolvido como portfólio para demonstrar habilidades em validação de dados, controle de qualidade e processamento de linguagem natural em PT-BR.
+Meu toolkit simples pra validar dados em português do Brasil.
 
-Objetivo
-Validar datasets no formato JSONL garantindo:
+Fiz pra meu portfólio OneForma - parte de Data QA / Annotation.
 
-Detecção de idioma (PT-BR)
-Identificação de textos vazios
-Deduplicação de entradas
-Validação de formato JSON
-Estrutura do projeto
-ptbr-ai-data-toolkit/
-├── validator.py # Script principal de validação
-├── sample_data.jsonl # Dataset de exemplo para testes
-├── requirements.txt # Dependências
-└── README.md
+## O que faz
 
-Tecnologias
-Python 3.8+
-pandas
-langdetect
-Como usar
-Instale as dependências:
-pip install -r requirements.txt
-Execute o validador:
+Esse script valida um arquivo jsonl e ve se tem erro comum:
+- texto vazio
+- json quebrado
+- espaço duplo
+- texto duplicado no mesmo lote
+
+Nada de lib complicada, só python puro mesmo.
+
+## Como usei aqui em Caetité
+
+1. coloquei meus dados no sample_data.jsonl
+2. rodei python validator.py
+3. vi o relatório no terminal
+
+Exemplo:
 python validator.py
-O script irá analisar o sample_data.jsonl e gerar um relatório de qualidade.
 
-Exemplo de saída
+Saida:
 Validando sample_data.jsonl...
+Total: 6 / Validos: 6 / Erros: 0
+Qualidade: 100.0%
 
-Relatório de Qualidade:
+## Arquivos
 
-Linha 3: Texto vazio (falha de Data Collection)
-Linha 4: Idioma detectado como 'en'
-Encontrados 1 textos duplicados
-Total de linhas analisadas: 5
+- validator.py - meu validador principal
+- sample_data.jsonl - meu lote de exemplo com 6 frases em pt-br que eu criei
+- requirements.txt - sem nada externo, só python
 
-Caso de uso
-Este validador simula o fluxo de trabalho real de um Data Annotator / Content Evaluator, garantindo que apenas dados limpos e em PT-BR nativo cheguem para o treinamento de modelos de IA.
-
-Autor
-Hilton Silva - PT-BR Native | Interesse em AI Training e Data Annotation
+Feito em ago/2025 no meu notebook, Python 3.10.
+Hilton Silva - Caetité BA
