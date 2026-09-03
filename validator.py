@@ -1,14 +1,25 @@
-# Validador de dataset PT-BR - Projeto para portfólio de Data Annotation
+# ptbr-ai-data-toolkit - validador de dados PT-BR
+# feito por Hilton - Caetité/BA pra portfólio OneForma
+# pra validar dados de treinamento de IA e anotação
+# criei em agosto/25, uso simples sem frescura
+# roda só com python padrão, sem langdetect nem nada externo
+
 import json
-from langdetect import detect
+from pathlib import Path
 
 ARQUIVO = "sample_data.jsonl"
 
 def carregar_dados(caminho):
+    # carrego aqui meu lote, linha por linha
     linhas = []
-    with open(caminho, 'r', encoding='utf-8') as f:
+    p = Path(caminho)
+    if not p.exists():
+        print(f"nao achei arquivo: {caminho}")
+        return []
+    
+    with open(p, 'r', encoding='utf-8') as f:
         for num, linha in enumerate(f, 1):
-            linhas.append((num, linha))
+            linhas.append((num, linha.strip()))
     return linhas
 
 def validar():
@@ -17,19 +28,23 @@ def validar():
     vistos = set()
     total = 0
     erros = 0
+    ok = 0
 
-    print("Relatório de Qualidade:")
-    
     try:
-        with open(ARQUIVO, 'r', encoding='utf-8') as arquivo:
-            for num_linha, linha in enumerate(arquivo, 1):
+        with open(ARQUIVO, 'r', encoding='utf-8') as arquiv:
+            for num_linha, linha in enumerate(arquiv, 1):
                 total += 1
                 
-                # verifica se o json é valido
+                if not linha.strip():
+                    print(f" - Linha {num_linha}: vazia, pulei")
+                    erros += 1
+                    continue
+
+                # ve se json ta ok
                 try:
                     dados = json.loads(linha)
                 except:
-                    print(f" - Linha {num_linha}: JSON quebrado")
+                    print(f" - Linha {num_linha}: JSON invalido")
                     erros += 1
                     continue
 
@@ -37,37 +52,34 @@ def validar():
 
                 # texto vazio
                 if not texto or texto.strip() == "":
-                    print(f" - Linha {num_linha}: Texto vazio (falha de Data Collection)")
+                    print(f" - Linha {num_linha}: Texto vazio")
                     erros += 1
                     continue
 
-                # idioma
-                try:
-                    idioma = detect(texto)
-                    if idioma != 'pt':
-                        print(f" - Linha {num_linha}: Idioma detectado como '{idioma}'")
-                        erros += 1
-                except:
-                    print(f" - Linha {num_linha}: Erro ao detectar idioma")
+                # espaco duplo - meu check basico
+                if "  " in texto:
+                    print(f" - Linha {num_linha}: espaco duplo")
                     erros += 1
+                    continue
 
                 # duplicado
                 if texto in vistos:
-                    print(f" - Linha {num_linha}: Texto duplicado")
+                    print(f" - Linha {num_linha}: duplicado")
                     erros += 1
+                    continue
                 else:
                     vistos.add(texto)
+                    ok += 1
 
     except FileNotFoundError:
-        print("Arquivo não encontrado. Verifica se o sample_data.jsonl ta na mesma pasta.")
+        print(f"arquivo {ARQUIVO} nao encontrado na pasta")
         return
 
-    print(f"\nTotal de linhas analisadas: {total}")
-    print(f"Total de erros encontrados: {erros}")
-    
+    print("\nRelatorio de Qualidade:")
+    print(f"Total: {total} / Validos: {ok} / Erros: {erros}")
     if total > 0:
-        qualidade = ((total - erros) / total) * 100
-        print(f"Qualidade do dataset: {qualidade:.0f}%")
+        qual = (ok/total)*100
+        print(f"Qualidade: {qual:.1f}%")
 
 if __name__ == "__main__":
     validar()
